@@ -1,0 +1,60 @@
+Firebase Security Rules for Hostel Management System
+======================================================
+
+Go to Firebase Console > Firestore Database > Rules and replace the current rules with:
+
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow read/write access to all authenticated users
+    // In production, you should restrict this to specific admin users
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
+```
+
+IMPORTANT: 
+1. These rules allow all access for development/testing
+2. In production, you should implement proper authentication rules
+3. The rules must be updated in the Firebase Console for the changes to take effect
+
+Alternative Production Rules (more secure):
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Students collection - read/write for all (for demo purposes)
+    match /students/{studentId} {
+      allow read, write: if true;
+    }
+    
+    // Hostel settings - read/write for all
+    match /hostel_settings/{settingId} {
+      allow read, write: if true;
+    }
+    
+    // Admins collection - read/write for all
+    match /admins/{adminId} {
+      allow read, write: if true;
+    }
+    
+    // Admin sessions - read/write for all
+    match /admin_sessions/{sessionId} {
+      allow read, write: if true;
+    }
+    
+    // Expenses - read/write for all
+    match /expenses/{expenseId} {
+      allow read, write: if true;
+    }
+    
+    // Notifications - read/write for all
+    match /notifications/{notificationId} {
+      allow read, write: if true;
+    }
+  }
+}
+```
